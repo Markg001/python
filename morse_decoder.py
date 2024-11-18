@@ -25,6 +25,8 @@ def decode_morse(signal_durations, threshold=0.1):
             morse_sequence.append('/')
     return ''.join(morse_sequence)
 
+print("to check how to push again")
+
 
 def wav_to_morse(file_path, threshold=0.5):
     with wave.open(file_path, 'r') as wav_file:
