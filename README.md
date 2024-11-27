@@ -99,4 +99,44 @@ Stop the script with `Ctrl+C` and reset IP tables:
 sudo iptables --flush
 ```
 
+# HTTP Redirect Script
+
+This Python script intercepts HTTP requests and redirects `.exe` file downloads to a specified URL using Scapy and NetfilterQueue.
+
+## Requirements
+
+- Python 3
+- Libraries: `scapy`, `netfilterqueue`
+- Administrative privileges
+
+## Installation & Setup
+
+1. Install dependencies:
+   ```bash
+   pip install scapy NetfilterQueue
+   ```
+2. Configure IP tables (Linux):
+   ```bash
+   sudo iptables -I FORWARD -j NFQUEUE --queue-num 0
+   ```
+   For testing locally:
+   ```bash
+   sudo iptables -I OUTPUT -j NFQUEUE --queue-num 0
+   sudo iptables -I INPUT -j NFQUEUE --queue-num 0
+   ```
+3. Run the script:
+   ```bash
+   sudo python3 script_name.py
+   ```
+
+## Usage
+
+- The script intercepts HTTP requests for `.exe` files and redirects them to `http://www.example.org/index.asp`.
+- Modify the `set_load` function to change the redirection target.
+
+## Reset IP Tables
+
+Stop the script with `Ctrl+C` and reset IP tables:
+```bash
+sudo iptables --flush
 
