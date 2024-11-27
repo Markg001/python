@@ -136,6 +136,75 @@ This Python script intercepts HTTP requests and redirects `.exe` file downloads 
 
 ## Reset IP Tables
 
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Packet Interception and Injection Script
+
+This Python script uses `Scapy` and `NetfilterQueue` to intercept, modify, and forward packets in a queue. It demonstrates how to:
+
+- Intercept HTTP requests and responses.
+- Remove specific HTTP headers.
+- Inject custom payloads into HTTP responses.
+
+## Prerequisites
+
+Ensure the following are installed on your system:
+
+- **Python 3.x**
+- **Scapy**: Install using `pip install scapy`
+- **NetfilterQueue**: Install using `pip install NetfilterQueue`
+
+You also need **root privileges** to run the script, as it interacts with system-level networking features.
+
+## Features
+
+1. **HTTP Request Modification**:
+   - Removes the `Accept-Encoding` header from HTTP requests to prevent compression in responses.
+
+2. **HTTP Response Injection**:
+   - Injects a JavaScript alert (`<script>alert('YOU HAVE BEEN HACKED');</script>`) into HTTP responses containing `</body>` and `text/html`.
+   - Adjusts the `Content-Length` header to account for the added content.
+
+3. **Automatic Checksum Recalculation**:
+   - Ensures the modified packets are valid by recalculating IP and TCP checksums.
+
+## Usage
+
+1. **Setup Packet Forwarding Rules**:
+   Use `iptables` to redirect traffic to the NetfilterQueue:
+   ```bash
+   sudo iptables -I FORWARD -j NFQUEUE --queue-num 0
+   ```
+   For local traffic, use:
+   ```bash
+   sudo iptables -I OUTPUT -j NFQUEUE --queue-num 0
+   sudo iptables -I INPUT -j NFQUEUE --queue-num 0
+   ```
+
+2. **Run the Script**:
+   ```bash
+   sudo python3 script_name.py
+   ```
+
+3. **Cleanup After Execution**:
+   Reset `iptables` rules with:
+   ```bash
+   sudo iptables --flush
+   ```
+
+## How It Works
+
+1. **Packet Interception**:
+   The script binds to a NetfilterQueue, which intercepts packets based on the `iptables` rules.
+
+2. **Packet Processing**:
+   - The script checks if a packet contains TCP and Raw data layers.
+   - For HTTP requests (`dport == 80`): Removes the `Accept-Encoding` header.
+   - For HTTP responses (`sport == 80`): Injects a JavaScript alert before the closing `</body>` tag if the content type is `text/html`.
+
+3. **Packet Modification**:
+   Modified packets have recalculated checksums and lengths before being forwarded.
 Stop the script with `Ctrl+C` and reset IP tables:
 ```bash
 sudo iptables --flush
