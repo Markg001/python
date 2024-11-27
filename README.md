@@ -56,5 +56,47 @@ Features:
 Demonstrates various print() techniques.
 Serves as a learning aid for new Python learners.
 
+  **DNS_SPOOFER.PY**
+
+# DNS Spoofing Script
+
+This Python script intercepts and modifies DNS requests to redirect traffic for a target domain to a specified IP address using Scapy and NetfilterQueue.
+
+## Disclaimer
+
+**Educational use only**. Unauthorized use of this script is illegal. Use it only in controlled environments where you have permission.
+
+## Requirements
+
+- Python 3
+- Libraries: `scapy`, `netfilterqueue`
+- Administrative privileges
+
+## Installation & Setup
+
+1. Install dependencies:
+   ```bash
+   pip install scapy NetfilterQueue
+   ```
+2. Configure IP tables (Linux):
+   ```bash
+   sudo iptables -I FORWARD -j NFQUEUE --queue-num 0
+   ```
+3. Run the script:
+   ```bash
+   sudo python3 script_name.py
+   ```
+
+## Usage
+
+1. Edit the `process_packet` function to specify the target domain and IP.
+2. Start the script and route traffic through the host running it.
+
+## Reset IP Tables
+
+Stop the script with `Ctrl+C` and reset IP tables:
+```bash
+sudo iptables --flush
+```
 
 
