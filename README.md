@@ -208,8 +208,9 @@ You also need **root privileges** to run the script, as it interacts with system
 Stop the script with `Ctrl+C` and reset IP tables:
 ```bash
 sudo iptables --flush
+```
 
-# HTTP Packet Interceptor and Code Injector
+# HTTPS Code Injector
 
 This Python script demonstrates how to intercept and modify HTTP traffic. It uses `Scapy` and `NetfilterQueue` to manipulate packets, allowing users to inject custom content into HTTP responses. This tool is for educational and authorized testing purposes only.
 
