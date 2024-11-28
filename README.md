@@ -209,3 +209,33 @@ Stop the script with `Ctrl+C` and reset IP tables:
 ```bash
 sudo iptables --flush
 
+# HTTP Packet Interceptor and Code Injector
+
+This Python script demonstrates how to intercept and modify HTTP traffic. It uses `Scapy` and `NetfilterQueue` to manipulate packets, allowing users to inject custom content into HTTP responses. This tool is for educational and authorized testing purposes only.
+
+## Features
+
+- **HTTP Request Modification**:
+  - Removes `Accept-Encoding` headers to bypass content compression.
+  - Downgrades HTTP requests to HTTP/1.0 for simpler processing.
+
+- **HTTP Response Injection**:
+  - Identifies `text/html` content and injects a custom JavaScript alert before the `</body>` tag.
+  - Updates the `Content-Length` header dynamically to ensure proper content delivery.
+
+- **Dynamic Packet Handling**:
+  - Recalculates IP and TCP checksums and updates headers for modified packets.
+
+## Usage
+
+1. **Set Up Packet Redirection**:
+   - Configure `iptables` to forward packets to a NetfilterQueue:
+     ```bash
+     sudo iptables -I FORWARD -j NFQUEUE --queue-num 0
+     ```
+
+2. **Run the Script**:
+   - Execute the script with administrative privileges:
+     ```bash
+     sudo python3 script_name.py
+     ```
